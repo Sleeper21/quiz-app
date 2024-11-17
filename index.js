@@ -1,32 +1,7 @@
-const quizQuestions = [
-    {
-      question: "What is the capital of France?",
-      options: ["Madrid", "Paris", "Rome", "Berlin"],
-      correctAnswer: 1 // Index of the correct answer
-    },
-    {
-      question: "Which planet is known as the Red Planet?",
-      options: ["Jupiter", "Venus", "Mars", "Saturn"],
-      correctAnswer: 2
-    },
-    {
-      question: "What is the chemical symbol for water?",
-      options: ["CO2", "H2O2", "H2", "H2O"],
-      correctAnswer: 3
-    },
-    {
-      question: "How many continents are there on Earth?",
-      options: ["5", "6", "7", "8"],
-      correctAnswer: 2
-    },
-    {
-      question: "Who wrote the play 'Romeo and Juliet'?",
-      options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
-      correctAnswer: 1
-    }
-  ];
+import { quizQuestions } from "./assets/src/quiz.js"; 
 
 ///////////
+let numberOfQuestions = document.getElementById("questionQtt");
 let counter = document.getElementById("counter");
 let startBtn = document.getElementById("start");
 let scoreElement = document.getElementById("score");
@@ -44,14 +19,23 @@ let score = 0;
 let submitted = "";
 showScore(score);
 
+numberOfQuestions.innerHTML = quizQuestions.length;
+
+startBtn.addEventListener("click", startRestart);
+option0.addEventListener("click", selected);
+option1.addEventListener("click", selected);
+option2.addEventListener("click", selected);
+option3.addEventListener("click", selected);
+nextSubmit.addEventListener("click", submit);
+
 function startRestart(){
     icon.classList.add("hidden");
     feedback.classList.add("hidden");
-    console.log(score)
-  if(startBtn.innerHTML === "START"){
+    
+  if(startBtn.innerHTML === "START"){ // Start from new
       startBtn.innerHTML = "RESTART Quiz";
       startBtn.style.backgroundColor = "grey";
-      resetButtons();
+      resetButtonsBackgroundColor();
 
       if (currentQuestion === 0) toggleAnswerBtn();
 
@@ -63,33 +47,18 @@ function startRestart(){
       option3.innerHTML = quizQuestions[currentQuestion].options[option3.id];
       nextSubmit.innerHTML = "Submit Answer";
       nextSubmit.classList.remove("hidden");
-  } else{
-      startBtn.innerHTML = "START";
-      startBtn.style.backgroundColor = "rgb(1, 143, 8)";
-      //manually disable answer buttons
-      option0.disabled = true;
-      option1.disabled = true;
-      option2.disabled = true;
-      option3.disabled = true;
-      
-      resetButtons();
-      counter.innerHTML = "Can you take the 5 Questions Quiz?";
-      nextSubmit.classList.add("hidden");
-      score = 0;
-      currentQuestion = 0;
-      question.innerHTML = "Press Start";
-      option0.innerHTML = "A";
-      option1.innerHTML = "B";
-      option2.innerHTML = "C";
-      option3.innerHTML = "D";
-  }
-}
+
+  } else{ // Restart
+
+      resetAll();
+  };
+};
 
 function nextQuestion(){
   currentQuestion ++;
   startBtn.innerHTML = "START";
   startRestart();
-}
+};
 
 function toggleAnswerBtn(){
   if (option0.disabled){
@@ -104,6 +73,7 @@ function toggleAnswerBtn(){
       option3.disabled = true;
   }
 };
+
 function selected(event){
   let selectedId = event.srcElement.id;
   let btnSelected = event.srcElement;
@@ -118,6 +88,7 @@ function selected(event){
   }
   submitted = btnSelected;
 };
+
 function submit(){
   if (nextSubmit.innerHTML === "Submit Answer"){
 
@@ -125,42 +96,13 @@ function submit(){
     feedback.classList.remove("hidden");
     
     toggleAnswerBtn();
+    checkIfCorrect(correctOptionId);
 
-    if (submitted.id == correctOptionId){ // If Correct answer
-        score ++;
-        showScore(score);
-        feedback.innerHTML = "CORRECT!";
-        submitted.style.backgroundColor = "green";
-        icon.src = "images/correct-icon.png";
-        icon.classList.remove("hidden");
-
-        if ((currentQuestion + 1) == quizQuestions.length){ // If last question
-            nextSubmit.innerHTML = "Finish";
-            nextSubmit.style.backgroundColor = "green";
-        } else{
-            nextSubmit.innerHTML = "Next Question";
-            nextSubmit.style.backgroundColor = "orangered";
-        }        
-        
-    } else { // If Wrong
-        feedback.innerHTML = "Wrong Answer";
-        // display and highlight correct answer and icon
-        document.getElementById(correctOptionId).style.backgroundColor = "green";
-        submitted.style.backgroundColor = "red";
-        icon.src = "images/wrong-icon.png";
-        icon.classList.remove("hidden");
-        if ((currentQuestion + 1) == quizQuestions.length){ // If last question
-            nextSubmit.innerHTML = "Finish";
-            nextSubmit.style.backgroundColor = "green";
-        } else{
-            nextSubmit.innerHTML = "Next Question";
-            nextSubmit.style.backgroundColor = "orangered";
-        }        
-        showScore(score);
-    }
   } else if (nextSubmit.innerHTML === "Finish"){
     nextSubmit.disabled = true;
+    nextSubmit.style.backgroundColor = "grey";
     nextSubmit.innerHTML = "The End";
+    startBtn.style.backgroundColor = "orangered";
 
     switch (score) {
         case 0:
@@ -182,7 +124,64 @@ function submit(){
   }
   
 }
-function resetButtons(){
+
+function checkIfCorrect(correctOptionId){
+  if (submitted.id == correctOptionId){ // If Correct answer
+    console.log(submitted)
+    score ++;
+    showScore(score);
+    feedback.innerHTML = "CORRECT!";
+    submitted.style.backgroundColor = "green";
+    icon.src = "/assets/images/correct-icon.png";
+    icon.classList.remove("hidden");
+
+    adjustNextBtn();
+    
+  } else { // If Wrong
+    feedback.innerHTML = "Wrong Answer";
+    // display and highlight correct answer and icon
+    document.getElementById(correctOptionId).style.backgroundColor = "green";
+    submitted.style.backgroundColor = "red";
+    icon.src = "assets/images/wrong-icon.png";
+    icon.classList.remove("hidden");
+
+    adjustNextBtn();     
+    showScore(score);
+  }
+}
+
+function adjustNextBtn(){
+  if ((currentQuestion + 1) == quizQuestions.length){ // If last question
+    nextSubmit.innerHTML = "Finish";
+    nextSubmit.style.backgroundColor = "green";
+  } else {
+    nextSubmit.innerHTML = "Next Question";
+    nextSubmit.style.backgroundColor = "orangered";
+  }        
+};
+
+function resetAll(){
+  startBtn.innerHTML = "START";
+      startBtn.style.backgroundColor = "rgb(1, 143, 8)";
+      //manually disable answer buttons
+      option0.disabled = true;
+      option1.disabled = true;
+      option2.disabled = true;
+      option3.disabled = true;
+      
+      resetButtonsBackgroundColor();
+      counter.innerHTML = "Can you take the 5 Questions Quiz?";
+      nextSubmit.classList.add("hidden");
+      score = 0;
+      currentQuestion = 0;
+      question.innerHTML = "Press Start";
+      option0.innerHTML = "A";
+      option1.innerHTML = "B";
+      option2.innerHTML = "C";
+      option3.innerHTML = "D";
+}
+
+function resetButtonsBackgroundColor(){
   option0.style.backgroundColor = "white";
   option1.style.backgroundColor = "white";
   option2.style.backgroundColor = "white";
@@ -190,7 +189,7 @@ function resetButtons(){
 }
 function showScore(score){
   if (score > 0 || currentQuestion > 0){
-      scoreElement.innerHTML = "Your Score: " + score + " out of 5";
+      scoreElement.innerHTML = "Your Score: " + score + " out of " + quizQuestions.length;
   } else {
       scoreElement.innerHTML = "** Your Score will display here.";
   }

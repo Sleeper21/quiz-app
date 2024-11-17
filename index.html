@@ -10,11 +10,11 @@
 <body>
     <div class="wrapper">
         <section class="title">        
-            <h2 id="counter">Can you take the 5 Questions Quiz?</h2>                       
+            <h2 id="counter">Can you take the <span id="questionQtt"></span> Questions Quiz?</h2>                       
         </section>
 
         <div class="start">
-            <button id="start" class="start-btn" onclick="startRestart()">START</button>
+            <button id="start" class="start-btn">START</button>
             <img id="feedbackIcon" class="icon hidden" alt="icon">
             <h3 id="feedback" class="feedback counter hidden"></h3>
         </div>
@@ -22,19 +22,19 @@
         <div class="question-container">
             <h3 id="question">Press Start</h3>
             <div class="answers-container">
-                <button id="0"  class="btn" onclick="selected(event)" disabled>Answer a</button>
-                <button id="1" class="btn" onclick="selected(event)" disabled>Answer b</button>
-                <button id="2" class="btn" onclick="selected(event)" disabled>Answer c</button>
-                <button id="3" class="btn" onclick="selected(event)" disabled>Answer d</button>
+                <button id="0"  class="btn" disabled>Answer a</button>
+                <button id="1" class="btn" disabled>Answer b</button>
+                <button id="2" class="btn" disabled>Answer c</button>
+                <button id="3" class="btn" disabled>Answer d</button>
             </div>
             <div class="footer">
                 <h4 id="score"></h4>
 
-                <button id="nextSubmit" class="btn next-btn hidden" onclick="submit()" disabled></button>
+                <button id="nextSubmit" class="btn next-btn hidden" disabled></button>
             </div>
         </div>
     </div>
 
-<script src="index.js"></script>
+<script type="module" src="index.js"></script>
 </body>
 </html>
