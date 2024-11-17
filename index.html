@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Challenge</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="wrapper">
+        <section class="title">        
+            <h2 id="counter">Can you take the 5 Questions Quiz?</h2>                       
+        </section>
+
+        <div class="start">
+            <button id="start" class="start-btn" onclick="startRestart()">START</button>
+            <img id="feedbackIcon" class="icon hidden" alt="icon">
+            <h3 id="feedback" class="feedback counter hidden"></h3>
+        </div>
+
+        <div class="question-container">
+            <h3 id="question">Press Start</h3>
+            <div class="answers-container">
+                <button id="0"  class="btn" onclick="selected(event)" disabled>Answer a</button>
+                <button id="1" class="btn" onclick="selected(event)" disabled>Answer b</button>
+                <button id="2" class="btn" onclick="selected(event)" disabled>Answer c</button>
+                <button id="3" class="btn" onclick="selected(event)" disabled>Answer d</button>
+            </div>
+            <div class="footer">
+                <h4 id="score"></h4>
+
+                <button id="nextSubmit" class="btn next-btn hidden" onclick="submit()" disabled></button>
+            </div>
+        </div>
+    </div>
+
+<script src="index.js"></script>
+</body>
+</html>
